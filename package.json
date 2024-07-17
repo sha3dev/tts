@@ -16,8 +16,7 @@
     "@google-cloud/text-to-speech": "^5.3.0",
     "@sha3/logger": "^1.0.1",
     "aws-sdk": "^2.1659.0",
-    "dotenv": "^16.4.5",
-    "elevenlabs": "^0.9.1"
+    "dotenv": "^16.4.5"
   },
   "devDependencies": {
     "ts-node": "^10.9.2",

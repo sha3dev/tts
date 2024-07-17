@@ -2,13 +2,13 @@
  * imports: externals
  */
 
-import { ElevenLabsClient } from "elevenlabs";
 import * as fs from "node:fs";
 
 /**
  * imports: internals
  */
 
+import config from "../../config";
 import Provider, { GenerateSpeechOptions } from "../abstract/provider";
 
 /**
@@ -18,18 +18,6 @@ import Provider, { GenerateSpeechOptions } from "../abstract/provider";
 export type ElevenlabsProviderOptions = { apiKey: string; modelId?: string };
 
 export type ElevenlabsGenerateSoundOptions = { duration?: number };
-
-/**
- * consts
- */
-
-const TEXT_TO_SPEECH_API_URL = "https://api.elevenlabs.io/v1/text-to-speech";
-
-const SOUND_API_URL = "https://api.elevenlabs.io/v1/sound-generation";
-
-const MAX_SOUND_DURATION = 4;
-
-const DEFAULT_MODEL_ID = "eleven_multilingual_v2";
 
 /**
  * export
@@ -79,19 +67,22 @@ export default class Elevenlabs extends Provider {
   public async generateSpeech(text: string, options: GenerateSpeechOptions) {
     const { apiKey, modelId } = this.options;
     const { voiceId, previousText, nextText } = options;
-    const response = await fetch(`${TEXT_TO_SPEECH_API_URL}/${voiceId}`, {
-      method: "POST",
-      headers: {
-        "xi-api-key": apiKey,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        text,
-        model_id: modelId || DEFAULT_MODEL_ID,
-        previous_text: previousText,
-        next_text: nextText,
-      }),
-    });
+    const response = await fetch(
+      `${config.ELEVENLABS_TTS_API_URL}/${voiceId}`,
+      {
+        method: "POST",
+        headers: {
+          "xi-api-key": apiKey,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text,
+          model_id: modelId || config.ELEVENLABS_DEFAULT_MODEL_ID,
+          previous_text: previousText,
+          next_text: nextText,
+        }),
+      }
+    );
     if (!response.ok) {
       const errorText = await response.text();
       throw new Error(
@@ -113,12 +104,12 @@ export default class Elevenlabs extends Provider {
   ) {
     const { apiKey } = this.options;
     const { duration } = options;
-    if (duration && duration > MAX_SOUND_DURATION) {
+    if (duration && duration > config.ELEVENLABS_MAX_SOUND_DURATION) {
       throw new Error(
-        `Error generating elevenlabs sound: max value for duration is ${MAX_SOUND_DURATION}`
+        `Error generating elevenlabs sound: max value for duration is ${config.ELEVENLABS_MAX_SOUND_DURATION}`
       );
     }
-    const response = await fetch(`${SOUND_API_URL}`, {
+    const response = await fetch(`${config.ELEVENLABS_SOUND_API_URL}`, {
       method: "POST",
       headers: {
         "xi-api-key": apiKey,
@@ -126,7 +117,10 @@ export default class Elevenlabs extends Provider {
       },
       body: JSON.stringify({
         text: prompt,
-        duration_seconds: Math.min(duration, MAX_SOUND_DURATION),
+        duration_seconds: Math.min(
+          duration,
+          config.ELEVENLABS_MAX_SOUND_DURATION
+        ),
         prompt_influence: 0.3,
       }),
     });

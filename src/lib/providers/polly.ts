@@ -9,6 +9,7 @@ import * as fs from "fs";
  * imports: internals
  */
 
+import config from "../../config";
 import Provider, { GenerateSpeechOptions } from "../abstract/provider";
 
 /**
@@ -22,12 +23,6 @@ export type PollyProviderOptions = {
   languageCode: string;
   format?: "text" | "ssml";
 };
-
-/**
- * consts
- */
-
-const DEFAULT_ENGINE = "neural";
 
 /**
  * export
@@ -66,7 +61,7 @@ export default class Polly extends Provider {
       OutputFormat: "mp3",
       VoiceId: voiceId,
       LanguageCode: languageCode,
-      Engine: DEFAULT_ENGINE,
+      Engine: config.POLLY_DEFAULT_ENGINE,
     };
     const filePath = this.getTempFilepath();
     const data = await this.client.synthesizeSpeech(params).promise();
