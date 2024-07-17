@@ -1,6 +1,6 @@
 {
   "name": "@sha3/tts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Text to speech API wrapper (AWS Polly, Google TTS, Elevenlabs...)",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
