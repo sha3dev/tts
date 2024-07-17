@@ -1,0 +1,49 @@
+{
+  "name": "@sha3/tts",
+  "version": "1.0.1",
+  "description": "Text to speech API wrapper (AWS Polly, Google TTS, Elevenlabs...)",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "author": "Juan Carlos Viñas",
+  "license": "MIT",
+  "homepage": "https://github.com/sha3dev/tts#readme",
+  "scripts": {
+    "test": "tsc --noEmit && node --loader tsx --test tests/*.test.ts",
+    "build": "tsup ./src"
+  },
+  "dependencies": {
+    "@google-cloud/text-to-speech": "^5.3.0",
+    "@sha3/logger": "^1.0.1",
+    "aws-sdk": "^2.1659.0",
+    "dotenv": "^16.4.5",
+    "elevenlabs": "^0.9.1"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "tsup": "^8.1.0",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sha3dev/tts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sha3dev/tts/issues"
+  },
+  "files": [
+    "dist",
+    "package.json"
+  ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
