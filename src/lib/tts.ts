@@ -67,9 +67,14 @@ export default class TTS {
       const item = items[i];
       const provider = this.providers.find((i) => i.Name === item.provider);
       if (!provider) {
-        throw new Error(`tts provider not found: ${item.provider}`);
+        const errMesg = `tts provider not found: ${item.provider}`;
+        logger.error(errMesg);
+        throw new Error(errMesg);
       }
       try {
+        logger.debug(
+          `generating speech (${provider.Name}): ${item.text.length} characters`
+        );
         const filePath = await provider.generateSpeech(item.text, {
           previousText: items[i - 1]?.text,
           nextText: items[i + 1]?.text,
